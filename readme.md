@@ -80,6 +80,7 @@ Foram empregadas as melhores práticas possíveis:
 - Dicionário para i86n
 - Cacheamento de dados
 - Clean-code
+- Dedicated Server Settings
 - Framework-less
 
 Por ter sido criado este projeto do zero, estarei a disposição de qualquer alteração e demais explicações sobre quaisquer parte do sistema para verificação de total ciencia sobre o código.
