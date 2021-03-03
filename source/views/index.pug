@@ -1,0 +1,223 @@
+doctype html
+
+html(lang='pt-BR')
+
+    head
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        meta(charset='utf-8')
+        title= title
+
+        script(src="js/angular/angular.min.js")
+        style.
+            .red            { background-color: rgba(221, 65, 36, .6); }
+            .red:hover      { background-color: rgba(221, 65, 36, .8); }
+            .blue           { background-color: rgba(52, 86, 139, .6); }
+            .blue:hover     { background-color: rgba(52, 86, 139, .8); }
+            .yellow         { background-color: rgba(239, 192, 80, .6); }
+            .yellow:hover   { background-color: rgba(239, 192, 80, .8); }
+            .green          { background-color: rgba(0, 155, 119, .6); }
+            .green:hover    { background-color: rgba(0, 155, 119, .8); }
+            .black          { background-color: rgba(0, 0, 0, .8); color: silver; }
+            .brown          { background-color: rgba(149, 82, 81, .6); }
+            .brown:hover    { background-color: rgba(149, 82, 81, .8); }
+            .purple         { background-color: rgba(107, 91, 149, .6); }
+            .purple:hover   { background-color: rgba(107, 91, 149, .8); }
+            .gray           { background-color: rgba(0, 0, 0, .6); }
+            .gray:hover     { background-color: rgba(0, 0, 0, .6); }
+            .white          { background-color: rgba(223, 207, 190, .6); }
+            .white:hover    { background-color: rgba(223, 207, 190, .8); }
+            .pink           { background-color: rgba(181, 101, 167, .6); }
+            .pink:hover     { background-color: rgba(181, 101, 167, .8); }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+                #logo {
+                    position: absolute;
+                    margin: 10px;
+                    width: 250px;
+                    height: 100px;
+                }
+
+                    #logo > img {
+                        height: 100%;
+                        width: 100%;
+                    }
+
+
+                #finderBar {
+                    height: 130px;
+                    width: calc(100% - 290px);
+                    right: 0;
+                    margin-left: 250px;
+                    border-bottom-left-radius: 30px;
+                    position: absolute;
+                    background-image: linear-gradient(#4D774E, #9DC88D);
+                    box-shadow: 0px 3px 15px #222;
+                }
+
+                    #finderPoke {
+                        margin-top: 60px;
+                        margin-left: 30px;
+                        width: 300px;
+                        height: 40px;
+                        border-radius: 25px;
+                        outline: none;
+                        border: 1px solid black;
+                        background-color: rgba(0, 0, 0, .2);
+                        padding: 0 20px;
+                        font-size: 18px;
+
+                        transition: cubic-bezier(0.25, 0.46, 0.45, 0.94) .5s;
+                    }
+
+                        #finderPoke:focus {
+                            width: 500px;
+                        }
+
+                #cardsContainer {
+                    background-color: #164A41;
+                    height: auto;
+                    min-height: calc(100vh - 170px);
+                    width: auto;
+                    float: left;
+                    padding: 0 calc(50% - 45vw);
+                    padding-top: 150px;
+                }
+
+                    .pokeCard {
+                        height: 250px;
+                        width: 200px;
+                        float: left;
+                        margin-left: 20px;
+                        margin-top: 20px;
+                        border-radius: 10px;
+                        box-shadow: 1px 1px 10px #333;
+                        transition: linear .3s;
+                        cursor: pointer;
+                    }
+
+                        .pokeCard:hover {
+                            box-shadow: 3px 3px 15px #222;
+                        }
+
+                        .pokeCard h3, 
+                        .pokeCard h6 {
+                            text-align: center;
+                            text-transform: capitalize;
+                        }
+
+                    #moreCards {
+                        height: 30px;
+                        width: 100%;
+                        margin-top: 20px;
+                        background-color: rgba(255, 255, 255, .3);
+                        float: left;
+                    }
+
+                #about {
+                    position: fixed;
+                    bottom: 0;
+                    width: 100%;
+                    height: 20px;
+                    opacity: 0;
+                    background-color: #F1B24A;
+                    text-align: center;
+                    cursor: default;
+
+                    transition: cubic-bezier(0.25, 0.46, 0.45, 0.94) .8s;
+                }
+
+                    #about:hover {
+                        opacity: .5;
+                    }
+
+            @media screen and (max-width: 700px) {
+                #finderBar {
+                    width: 100%;
+                    height: 90px;
+                    top: 130px;
+                    border-radius: 0;
+                    position: absolute;
+                }
+
+                    #finderPoke,
+                    #finderPoke:focus {
+                        margin-top: 25px;
+                        margin-left: 5%;
+                        width: calc(90% - 40px);
+                        font-size: 17px;
+                    }
+
+                #cardsContainer {
+                    padding: 0 calc(50% - 40vw);
+                    padding-top: 230px;
+                }
+            }
+
+    body(ng-app="app" ng-controller="controller")
+        #logo
+            img(src="img/pokemon-logo.png", alt="Pokemon Logo")
+        #finderBar
+            input#finderPoke(ng-model="pokeName" ng-change="getCards (pokeName)" placeholder="Procurar")
+
+        #cardsContainer(ng-cloak)
+            .pokeCard(
+                ng-repeat="pokeUrl in showedList"
+                class=`{{ request ('/pokemon/color/' + pokeUrl.name).name }}`
+            )
+                h3 {{ pokeUrl.name }}
+                //- h6 {{ dict.labels.species }}: {{ request (pokeUrl.url).species.name }}
+
+            #moreCards
+
+        #about.
+            Powered by WNS IT Solutions.
+
+
+
+        script.
+            angular.
+                module ('app', []).
+                factory ('repository', function () {
+                    const xmlHttp = new XMLHttpRequest ();
+                    xmlHttp.open ('GET', '/pokemon/fulllist', false);
+                    xmlHttp.send (null);
+
+                    return {
+                        dictionary  : JSON.parse (`!{ JSON.stringify (dictionary) }`),
+                        pokemonList : JSON.parse (`!{ JSON.stringify (pokemonList) }`).value,
+                        fullList    : JSON.parse (xmlHttp.responseText).data
+                    };
+                }).
+                controller ('controller', ['$scope','repository', function ($scope, repository) {
+                    const app       = $scope;
+
+                    /** Variables **/
+                    app.dict        = repository.dictionary;
+                    //- app.showedList  = repository.pokemonList;
+                    app.showedList  = repository.fullList;
+
+                    /** Methods **/
+                    app.request = function (url) {
+                        if (url && url.length) {
+                            const xmlHttp = new XMLHttpRequest ();
+                            xmlHttp.open ('GET', url, false);
+                            xmlHttp.send (null);
+                            return JSON.parse (JSON.parse (xmlHttp.responseText).data);
+                        }
+                        return [];
+                    }
+
+
+                    app.getCards = function (name) {
+                        if (name && name.length)
+                            app.showedList = repository.fullList.filter (v => v.name.includes (name));
+                    }
+
+
+                    /** Scheduler **/
+                    //- setInterval (() => app.$apply (), 5000);
+                }]);
