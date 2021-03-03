@@ -1,6 +1,6 @@
 # PokeDex
 ## Autor
-Wansley Nery Soto [Pokedex](https://github.com/wansleynery/pokedex)
+Wansley Nery Soto - [Pokedex](https://github.com/wansleynery/pokedex)
 <br><br>
 
 ## Definição
